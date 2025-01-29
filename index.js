@@ -7,7 +7,9 @@ app.use(express.urlencoded({extended:false}));
 
 //Routes
 //Get users
-
+app.get('/api/users',(req,res)=>{
+    return res.status(200).json(users);
+})
 
 //Get user with id
 
