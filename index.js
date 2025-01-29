@@ -2,7 +2,6 @@ const express=require('express');
 const app=express();
 const users=require('./MOCK_DATA.json');
 const fs=require('fs');
-const { join } = require('path');
 const { json } = require('stream/consumers');
 
 app.use(express.urlencoded({extended:false}));
@@ -51,6 +50,23 @@ app.patch('/api/users/:id',(req,res)=>{
         fs.writeFile('./MOCK_DATA.json',JSON.stringify(users),(err)=>{
             return res.status(200).json({message:"Updated successfully"});
         })
+    }
+})
+
+//put user
+app.put('/api/users/:id',(req,res)=>{
+    const id=Number(req.params.id);
+    const body=req.body;
+    const user=users.find((user)=>user.id===id);
+    if(!user){
+        return res.status(404).json({message:"User not found"});
+    }else{
+        const userIndex=users.findIndex((user)=>user.id===id);
+        users[userIndex]={...users[userIndex], ...body};
+        fs.writeFile('./MOCK_DATA.json',JSON.stringify(users),(err)=>{
+            return res.status(200).json({message:"Updated successfully"});
+        });
+        
     }
 })
 
