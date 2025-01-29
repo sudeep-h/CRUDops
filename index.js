@@ -24,7 +24,18 @@ app.get('/api/users/:id',(req,res)=>{
 })
 
 //POST user
-
+app.post('/api/users',(req,res)=>{
+    const body=req.body;
+    const newUser={id:users.length+1, ...body};
+    users.push(newUser);
+    fs.writeFile('./MOCK_DATA.json',JSON.stringify(users),(err)=>{
+        if(err){
+            return res.status(500).json({message:"Something went wrong"});
+        }else{
+            return res.status(201).json({message:"User posted successfully"});
+        }
+    })
+})
 
 //update user
 
