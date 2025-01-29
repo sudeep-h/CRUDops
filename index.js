@@ -38,7 +38,20 @@ app.post('/api/users',(req,res)=>{
 })
 
 //update user
-
+app.patch('/api/users/:id',(req,res)=>{
+    const id=Number(req.params.id);
+    const body=req.body;
+    const user=users.find((user)=>user.id==id);
+    const userIndex=users.findIndex((user)=>user.id==id);
+    users[userIndex]={...users[userIndex], ...body};
+    if(!user){
+        return res.status(404).json({message:"User not found"});
+    }else{
+        fs.writeFile('./MOCK_DATA.json',JSON.stringify(users),(err)=>{
+            return res.status(200).json({message:"Updated successfully"});
+        })
+    }
+})
 
 //delete user
 
